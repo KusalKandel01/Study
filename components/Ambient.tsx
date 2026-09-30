@@ -1,28 +1,29 @@
 'use client';
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import { SOUNDS, setVolume } from '@/lib/audio';
 
-const SOUNDS = [
-  { name: 'Rain', url: 'https://cdn.pixabay.com/audio/2022/03/10/audio_c8c8a73467.mp3' },
-  { name: 'Cafe', url: 'https://cdn.pixabay.com/audio/2022/02/07/audio_d0c6ff1bdd.mp3' },
-  { name: 'Lofi', url: 'https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3' },
-];
 export default function Ambient() {
-  const [on, setOn] = useState<Record<string, boolean>>({}); const refs = useRef<Record<string, HTMLAudioElement>>({});
-  const toggle = (n: string, url: string) => {
-    const a = (refs.current[n] ||= Object.assign(new Audio(url), { loop: true }));
-    on[n] ? a.pause() : a.play(); setOn({ ...on, [n]: !on[n] });
+  const [on, setOn] = useState<Record<string, boolean>>({}), [vol, setVol] = useState(0.5);
+  const stops = useRef<Record<string, () => void>>({});
+  const toggle = (n: string, start: () => () => void) => {
+    setVolume(vol);
+    if (on[n]) { stops.current[n]?.(); delete stops.current[n]; } else stops.current[n] = start();
+    setOn({ ...on, [n]: !on[n] });
   };
   return (
     <section className="glass p-6 dim-soft">
-      <h2 className="font-head font-extrabold text-2xl mb-3">Ambience</h2>
+      <h2 className="font-head font-extrabold text-xl mb-1">Sound</h2>
+      <p className="text-sm text-[color:var(--mute)] mb-3">Steady noise helps many people block distractions. Evidence for binaural tones is mixed, so try and keep what works.</p>
       {SOUNDS.map(s => (
         <div key={s.name} className="flex justify-between items-center py-2">
-          <span>{s.name}</span>
-          <button onClick={() => toggle(s.name, s.url)} role="switch" aria-checked={!!on[s.name]} className="w-12 h-7 rounded-full p-0.5 flex" style={{ background: on[s.name] ? '#30d158' : 'var(--line)', justifyContent: on[s.name] ? 'flex-end' : 'flex-start' }}>
+          <div><div className="font-medium">{s.name}</div><div className="text-xs text-[color:var(--mute)]">{s.note}</div></div>
+          <button onClick={() => toggle(s.name, s.start)} role="switch" aria-checked={!!on[s.name]} aria-label={s.name} className="w-12 h-7 rounded-full p-0.5 flex" style={{ background: on[s.name] ? '#30d158' : 'var(--line)', justifyContent: on[s.name] ? 'flex-end' : 'flex-start' }}>
             <motion.span layout transition={{ type: 'spring', stiffness: 500, damping: 30 }} className="w-6 h-6 rounded-full bg-white shadow" />
           </button>
         </div>))}
+      <label className="flex items-center gap-3 mt-3 text-sm text-[color:var(--mute)]">Volume
+        <input type="range" min="0" max="1" step="0.05" value={vol} onChange={e => { setVol(+e.target.value); setVolume(+e.target.value); }} className="flex-1" /></label>
     </section>
   );
 }

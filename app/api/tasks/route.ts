@@ -3,7 +3,7 @@ import { sql, userId } from '@/lib/db';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const { rows } = await sql`SELECT id,title,subject,priority,done,pinned,created_at,due_date::text AS due_date
+  const { rows } = await sql`SELECT id,title,subject,priority,done,pinned,created_at,completed_at,due_date::text AS due_date
     FROM tasks WHERE user_id=${userId()} ORDER BY done, priority DESC, due_date NULLS LAST`;
   return NextResponse.json(rows);
 }
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 }
 export async function PATCH(req: Request) {
   const { id, done, pinned } = await req.json();
-  if (typeof done === 'boolean') await sql`UPDATE tasks SET done=${done} WHERE id=${id} AND user_id=${userId()}`;
+  if (typeof done === 'boolean') await sql`UPDATE tasks SET done=${done}, completed_at=${done ? new Date().toISOString() : null} WHERE id=${id} AND user_id=${userId()}`;
   if (typeof pinned === 'boolean') {
     if (pinned) await sql`UPDATE tasks SET pinned=FALSE WHERE user_id=${userId()}`;
     await sql`UPDATE tasks SET pinned=${pinned} WHERE id=${id} AND user_id=${userId()}`;

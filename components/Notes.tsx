@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 
-const today = () => new Date().toISOString().slice(0, 10);
+import { todayLocal as today } from '@/lib/date';
 export default function Notes() {
   const [body, setBody] = useState(''), [saved, setSaved] = useState(true), t = useRef<any>(null), loaded = useRef(false);
   useEffect(() => { fetch(`/api/notes?date=${today()}`).then(r => r.json()).then(d => { setBody(d.body); loaded.current = true; }); }, []);

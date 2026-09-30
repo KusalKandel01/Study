@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Pin, Plus } from 'lucide-react';
 
-export type Task = { id: number; title: string; subject: string; priority: number; done: boolean; pinned: boolean; created_at: string; due_date: string | null };
+export type Task = { id: number; title: string; subject: string; priority: number; done: boolean; pinned: boolean; created_at: string; completed_at: string | null; due_date: string | null };
 
 const day = 86400000;
 export function dueBadge(due: string | null) {

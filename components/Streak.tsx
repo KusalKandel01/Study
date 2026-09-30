@@ -1,9 +1,10 @@
 'use client';
 import { motion } from 'framer-motion';
+import { ymd } from '@/lib/date';
 
 export default function Streak({ current, longest, minutesToday, goal = 240, minutesByDay }: { current: number; longest: number; minutesToday: number; goal?: number; minutesByDay: Record<string, number> }) {
   const pct = Math.min(1, minutesToday / goal), R = 52, C = 2 * Math.PI * R;
-  const days = Array.from({ length: 182 }, (_, i) => { const d = new Date(Date.now() - (181 - i) * 86400000); return d.toISOString().slice(0, 10); });
+  const days = Array.from({ length: 182 }, (_, i) => { const d = new Date(Date.now() - (181 - i) * 86400000); return ymd(d); });
   const shade = (m = 0) => m === 0 ? 'var(--line)' : `rgba(48,209,88,${Math.min(1, .3 + m / 240)})`;
   return (
     <section className="glass p-6 dim-soft">
