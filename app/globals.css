@@ -17,3 +17,14 @@ html[data-bg='rose'] body { background-image:radial-gradient(60% 50% at 85% 10%,
 h1,h2 { text-wrap:balance; } p { text-wrap:pretty; max-width:62ch; }
 .stat-n { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-variant-numeric:tabular-nums; letter-spacing:-.04em; font-size:clamp(2rem,5vw,3rem); line-height:1; }
 .font-head,.num,.stat-n { font-family:var(--head,'Plus Jakarta Sans'),sans-serif !important; font-weight:var(--headw,800) !important; letter-spacing:var(--headls,-.03em) !important; }
+/* spacing + alignment system */
+body { line-height:1.5; -webkit-font-smoothing:antialiased; }
+.glass { padding:clamp(1.25rem,3vw,1.75rem) !important; text-align:left; }
+.glass h2 { margin:0 0 1rem !important; line-height:1.15; font-size:1.375rem !important; }
+.glass h3 { margin:0 0 .5rem; font-size:.75rem !important; text-transform:uppercase; letter-spacing:.08em; }
+.glass p { margin:0 0 1rem; line-height:1.55; }
+.glass h2 + p { margin-top:-.5rem; }
+.glass input, .glass textarea { line-height:1.4; }
+main { padding-inline:clamp(1rem,4vw,2rem) !important; }
+main > div { gap:1.25rem; }
+.tabular { font-variant-numeric:tabular-nums; }

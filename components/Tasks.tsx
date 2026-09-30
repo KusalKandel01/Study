@@ -28,8 +28,8 @@ export default function Tasks({ tasks, reload }: { tasks: Task[]; reload: () => 
 
   return (
     <section className="glass p-6 dim-soft">
-      <h2 className="font-head font-extrabold text-2xl mb-4">Tasks</h2>
-      <div className="flex flex-wrap gap-2 mb-6">
+      <h2 className="font-head">Tasks</h2>
+      <div className="flex flex-wrap items-end gap-3 mb-6">
         <input value={title} onChange={e => setTitle(e.target.value)} onKeyDown={e => e.key === 'Enter' && add()} placeholder="What needs finishing?" className="flex-1 min-w-[10rem] bg-transparent border-b border-[color:var(--line)] py-2 outline-none" />
         <input value={subject} onChange={e => setSubject(e.target.value)} placeholder="Subject" className="w-28 bg-transparent border-b border-[color:var(--line)] py-2 outline-none" />
         <input type="date" value={due} onChange={e => setDue(e.target.value)} className="bg-transparent border-b border-[color:var(--line)] py-2 outline-none" />
@@ -43,16 +43,16 @@ export default function Tasks({ tasks, reload }: { tasks: Task[]; reload: () => 
             {list.map(t => { const b = dueBadge(t.due_date); return (
               <motion.div layout key={t.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: t.done ? .4 : 1, y: 0 }} exit={{ opacity: 0 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                className="flex items-center gap-3 py-2.5 border-b border-[color:var(--line)]">
+                className="flex items-center gap-3 py-3 border-b border-[color:var(--line)]">
                 <motion.button whileTap={{ scale: 1.3 }} onClick={() => patch({ id: t.id, done: !t.done })}
                   className="w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0" style={{ borderColor: t.done ? '#30d158' : 'var(--mute)', background: t.done ? '#30d158' : 'transparent' }} aria-label="Toggle done">
                   {t.done && <Check size={14} color="#fff" />}
                 </motion.button>
                 <div className="flex-1 min-w-0">
-                  <div className={t.done ? 'line-through' : ''}>{t.title}</div>
-                  <div className="text-xs text-[color:var(--mute)]">{ago(t.created_at)}</div>
+                  <div className={`leading-snug break-words ${t.done ? 'line-through' : ''}`}>{t.title}</div>
+                  <div className="text-xs text-[color:var(--mute)] mt-0.5">{ago(t.created_at)}</div>
                 </div>
-                <span className="text-xs font-semibold px-2 py-1 rounded-full" style={{ color: b.color, background: 'var(--line)' }}>{b.text}</span>
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap shrink-0 tabular" style={{ color: b.color, background: 'var(--line)' }}>{b.text}</span>
                 <button onClick={() => patch({ id: t.id, pinned: !t.pinned })} aria-label="Pin to timer"><Pin size={18} fill={t.pinned ? 'var(--accent)' : 'none'} color={t.pinned ? 'var(--accent)' : 'var(--mute)'} /></button>
               </motion.div>); })}
           </AnimatePresence>
