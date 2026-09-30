@@ -40,10 +40,10 @@ export default function Timer({ taskId, taskTitle, onDone }: { taskId: number | 
   return (
     <motion.section layout className="glass p-6 sm:p-8 flex flex-col items-center"
       animate={{ boxShadow: running && mode === 'Focus' ? '0 0 80px -10px rgba(255,69,58,.45)' : '0 20px 60px -20px rgba(0,0,0,.25)' }}>
-      <div className="flex gap-1 mb-6 p-1 rounded-full max-w-full overflow-x-auto" style={{ background: 'var(--line)' }}>
+      <div className="flex w-full max-w-sm mb-6 p-1 rounded-full" style={{ background: 'var(--line)' }}>
         {MODES.map(m => (
-          <button key={m} onClick={() => pick(m)} className="px-3 sm:px-4 py-1.5 rounded-full text-sm font-medium relative whitespace-nowrap">
-            {mode === m && <motion.span layoutId="pill" className="absolute inset-0 glass" style={{ borderRadius: 999 }} />}
+          <button key={m} onClick={() => pick(m)} className="flex-1 px-2 py-2 rounded-full text-sm font-medium relative whitespace-nowrap text-center">
+            {mode === m && <motion.span layoutId="pill" className="absolute inset-0 pill" />}
             <span className="relative">{m}</span>
           </button>))}
       </div>
